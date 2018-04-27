@@ -5,7 +5,7 @@
     expense_id: String
     name: String
     cost: Double
-    deadline: Date
+    deadline: Double
     done: Boolean
     plan_id: String
 
