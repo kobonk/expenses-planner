@@ -32,6 +32,9 @@ class Expense:
     def create_builder(self):
         return Builder(self)
 
+    def to_string(self):
+        return "---------\nExpense {id}:\n---------\nName: {name}\nCost: {cost}".format(id=self.__expense_id, name=self.__name, cost=self.__cost)
+
 class Builder:
     """Builds a new instance of Expense"""
 

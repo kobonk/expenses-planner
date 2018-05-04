@@ -8,6 +8,7 @@ import uuid
 
 from enums import Weekdays, TimeUnits, PlanTypes
 from SqliteExpensesPersister import SqliteExpensesPersister
+from SqliteExpensesRetriever import SqliteExpensesRetriever
 from Expense import Expense
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
@@ -17,6 +18,7 @@ EXPENSES_TABLE_NAME = "expenses"
 def main():
 
     expenses_persister = SqliteExpensesPersister(DATABASE_PATH, EXPENSES_TABLE_NAME)
+    expenses_retriever = SqliteExpensesRetriever(DATABASE_PATH, EXPENSES_TABLE_NAME)
 
     fake_expense = Expense(
         uuid.uuid4(),
@@ -26,6 +28,10 @@ def main():
         uuid.uuid4()
     )
 
-    expenses_persister.add_expense(fake_expense)
+    # expenses_persister.add_expense(fake_expense)
+    expenses = expenses_retriever.retrieve_incoming_expenses()
+
+    for expense in expenses:
+        print(expense.to_string())
 
 main()
