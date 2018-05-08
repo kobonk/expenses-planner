@@ -1,5 +1,5 @@
 """The module contains Expense class"""
-
+import time
 class Expense:
     """The class is a model for a single planned Expense"""
 
@@ -32,8 +32,20 @@ class Expense:
     def create_builder(self):
         return Builder(self)
 
+    def get_deadline_string(self):
+        return time.ctime(self.__deadline)
+
     def to_string(self):
-        return "---------\nExpense {id}:\n---------\nName: {name}\nCost: {cost}".format(id=self.__expense_id, name=self.__name, cost=self.__cost)
+        return """
+                ------------------------------------------------------
+                Expense {id}:
+                ------------------------------------------------------
+                Name: {name}
+                Cost: {cost}
+                Deadline: {deadline}
+                """.format(id=self.__expense_id, name=self.__name, 
+                           cost=self.__cost, 
+                           deadline=self.get_deadline_string())
 
 class Builder:
     """Builds a new instance of Expense"""
