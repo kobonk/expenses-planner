@@ -23,10 +23,13 @@ class SqliteExpensesRetriever():
         expenses = []
 
         for row in rows:
-            print(row)
-            expenses.append(Expense(row[0], row[1], row[2], row[3], row[4], row[5]))
+            expenses.append(self.__convert_table_row_to_expense(row))
 
         return expenses
+
+    def __convert_table_row_to_expense(self, table_row):
+        return Expense(table_row[0], table_row[1], table_row[2], table_row[3],
+                       table_row[4], table_row[5])
 
     def __get_database_connection(self):
         directory = os.path.dirname(self.__database_path)
