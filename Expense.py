@@ -36,16 +36,15 @@ class Expense:
         return time.ctime(self.__deadline)
 
     def to_string(self):
-        return """
-                ------------------------------------------------------
-                Expense {id}:
-                ------------------------------------------------------
-                Name: {name}
-                Cost: {cost}
-                Deadline: {deadline}
-                """.format(id=self.__expense_id, name=self.__name, 
-                           cost=self.__cost, 
-                           deadline=self.get_deadline_string())
+        """Returns a string representation of Expense object"""
+        return ("------------------------------------------------------\n"
+                "Expense {id}:\n"
+                "------------------------------------------------------\n"
+                "Name: {name}\n"
+                "Cost: {cost}\n"
+                "Deadline: {deadline}"
+               ).format(id=self.__expense_id, name=self.__name,
+                        cost=self.__cost, deadline=self.get_deadline_string())
 
 class Builder:
     """Builds a new instance of Expense"""
