@@ -6,10 +6,10 @@ import sqlite3
 import time
 import uuid
 
-from enums import Weekdays, TimeUnits, PlanTypes
-from SqliteExpensesPersister import SqliteExpensesPersister
-from SqliteExpensesRetriever import SqliteExpensesRetriever
-from Expense import Expense
+from src.enums import Weekdays, TimeUnits, PlanTypes
+from src.SqliteExpensesPersister import SqliteExpensesPersister
+from src.SqliteExpensesRetriever import SqliteExpensesRetriever
+from src.Expense import Expense
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 DATABASE_PATH = r"{DIR_PATH}\dbs\expenses-planner.db".format(**locals()).replace("\\", "\\\\")

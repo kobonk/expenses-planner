@@ -1,7 +1,7 @@
-from Expense import Expense
 import os
 import time
 import sqlite3
+from src.Expense import Expense
 
 class SqliteExpensesRetriever():
     
