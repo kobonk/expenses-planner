@@ -13,6 +13,7 @@ class TestSqliteDatabaseConnectionProvider(unittest.TestCase):
 
     def setUp(self):
         self.database_path = "fake database path"
+        self.fake_database_directory = "fake directory"
         self.provider = SqliteDatabaseConnectionProvider(self.database_path)
 
     def tearDown(self):
@@ -20,19 +21,38 @@ class TestSqliteDatabaseConnectionProvider(unittest.TestCase):
         self.provider = None
 
     @mock.patch("src.SqliteDatabaseConnectionProvider.os")
-    @mock.patch("src.SqliteDatabaseConnectionProvider.sqlite3")
-    def test_connection_failure(self, mock_sqlite, mock_os):
-        """Verifies if code fails gracefully in case of no connection"""
+    def test_no_database_file(self, mock_os):
+        """Verifies if a new db directory is created in case it doesn't exist"""
 
-        mock_os.path.dirname.return_value = "fake directory"
+        mock_os.path.dirname.return_value = self.fake_database_directory
         mock_os.path.exists.return_value = False
+        mock_os.makedirs.return_value = True
 
         self.provider.get_connection()
 
-        mock_os.path.dirname.assert_called_with(self.database_path)
-        mock_os.makedirs.assert_called_with("fake directory")
+        mock_os.makedirs.assert_called_with(self.fake_database_directory)
 
-        mock_sqlite.connect.assert_called_with(self.database_path)
+    @mock.patch("src.SqliteDatabaseConnectionProvider.os")
+    @mock.patch("src.SqliteDatabaseConnectionProvider.sqlite3")
+    def test_no_sqlite_connection(self, mock_sqlite, mock_os):
+        """Verifies if code fails gracefully in case of no connection"""
+
+        mock_os.path.dirname.return_value = self.fake_database_directory
+        mock_os.path.exists.return_value = True
+        mock_os.makedirs.return_value = True
+        mock_sqlite.connect.side_effect = self.__make_sqlite_connect_fail
+
+        with self.assertRaises(OSError) as context:
+            self.provider.get_connection()
+
+        self.assertEqual(context.exception.args[0], "Cannot connect!")
+
+    def __make_sqlite_connect_fail(self, database_path):
+        """This is a side effect function to make sqlite connection fail"""
+        if database_path is self.database_path:
+            raise OSError("Cannot connect!")
+
+        return True
 
 if __name__ == "__main__":
     unittest.main()
