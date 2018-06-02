@@ -21,6 +21,7 @@ def main():
 
     renderer = TexttableExpensesRenderer()
     renderer.render_expenses(expenses)
+    print("\n\n")
     renderer.render_expense(expenses[0])
 
 main()
