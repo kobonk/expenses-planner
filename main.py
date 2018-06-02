@@ -20,6 +20,7 @@ def main():
     expenses = expenses_retriever.retrieve_incoming_expenses()
 
     renderer = TexttableExpensesRenderer()
-    renderer.render(expenses)
+    renderer.render_expenses(expenses)
+    renderer.render_expense(expenses[0])
 
 main()

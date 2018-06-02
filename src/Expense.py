@@ -36,6 +36,13 @@ class Expense:
         """Returns true if the planned Expense has been paid"""
         return self.__done
 
+    def is_done_string(self):
+        """Returns Yes if the Expense has been paid and No if otherwise"""
+        if self.__done:
+            return "Yes"
+
+        return "No"
+
     def create_builder(self):
         """Creates an instance of a Builder object"""
         return Builder(self)
