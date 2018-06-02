@@ -10,16 +10,36 @@ class SqliteExpensesRetriever():
         self.__expenses_table_name = expenses_table_name
 
     def retrieve_incoming_expenses(self):
-        connection = self.__get_database_connection()
-        cursor = connection.cursor()
-        
-        cursor.execute("""SELECT * FROM {table_name} 
+        """Returns future Expenses"""
+        rows = self.__get_rows("""SELECT * FROM {table_name} 
                         WHERE deadline >= {current_time}""".format(
                             table_name=self.__expenses_table_name,
                             current_time=time.time()
                         ))
 
-        rows = cursor.fetchall()
+        return self.__get_expenses_table(rows)
+
+    def retrieve_unpaid_expenses(self):
+        """Returns past and future unpaid Expenses"""
+        rows = self.__get_rows("""SELECT * FROM {table_name} 
+                        WHERE done = '{is_done}'
+                        ORDER BY deadline ASC""".format(
+                            table_name=self.__expenses_table_name,
+                            current_time=time.time(),
+                            is_done=int(False)
+                        ))
+
+        return self.__get_expenses_table(rows)
+
+    def __get_rows(self, query):
+        connection = self.__get_database_connection()
+        cursor = connection.cursor()
+        
+        cursor.execute(query)
+
+        return cursor.fetchall()
+
+    def __get_expenses_table(self, rows):
         expenses = []
 
         for row in rows:

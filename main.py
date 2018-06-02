@@ -17,11 +17,14 @@ EXPENSES_TABLE_NAME = "expenses"
 
 def main():
     expenses_retriever = SqliteExpensesRetriever(DATABASE_PATH, EXPENSES_TABLE_NAME)
-    expenses = expenses_retriever.retrieve_incoming_expenses()
-
+    expenses = expenses_retriever.retrieve_unpaid_expenses()
     renderer = TexttableExpensesRenderer()
-    renderer.render_expenses(expenses)
-    print("\n\n")
-    renderer.render_expense(expenses[0])
+
+    if len(expenses) > 0:
+        renderer.render_expenses(expenses)
+        print("\n\n")
+        renderer.render_expense(expenses[0])
+    else:
+        print("No unpaid Expenses found.")
 
 main()
