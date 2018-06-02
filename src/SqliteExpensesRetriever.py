@@ -14,7 +14,7 @@ class SqliteExpensesRetriever():
         cursor = connection.cursor()
         
         cursor.execute("""SELECT * FROM {table_name} 
-                        WHERE deadline <= {current_time}""".format(
+                        WHERE deadline >= {current_time}""".format(
                             table_name=self.__expenses_table_name,
                             current_time=time.time()
                         ))
