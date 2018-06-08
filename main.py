@@ -16,11 +16,13 @@ DATABASE_PATH = r"{DIR_PATH}\dbs\expenses-planner.db".format(**locals()).replace
 EXPENSES_TABLE_NAME = "expenses"
 
 def main():
+    """Main application entry point"""
+    
     expenses_retriever = SqliteExpensesRetriever(DATABASE_PATH, EXPENSES_TABLE_NAME)
     expenses = expenses_retriever.retrieve_unpaid_expenses()
     renderer = TexttableExpensesRenderer()
 
-    if len(expenses) > 0:
+    if expenses:
         renderer.render_expenses(expenses)
         print("\n\n")
         renderer.render_expense(expenses[0])
