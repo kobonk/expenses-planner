@@ -1,6 +1,7 @@
 """This is the main starting point of the application"""
 import os
 
+from src.input_provider.CommandLineInputProvider import CommandLineInputProvider
 from src.renderer.TexttableExpensesRenderer import TexttableExpensesRenderer
 from src.SqliteExpensesRetriever import SqliteExpensesRetriever
 
@@ -17,9 +18,11 @@ def main():
 
     if expenses:
         renderer.render_expenses(expenses)
-        print("\n\n")
-        renderer.render_expense(expenses[0])
     else:
         print("No unpaid Expenses found.")
+
+    expense = CommandLineInputProvider().create_expense()
+    print("\n\n")
+    renderer.render_expense(expense)
 
 main()
