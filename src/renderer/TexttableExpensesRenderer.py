@@ -3,19 +3,20 @@ from texttable import Texttable
 from src.renderer.ExpensesRenderer import ExpensesRenderer
 
 class TexttableExpensesRenderer(ExpensesRenderer):
-    """The class displays Expenses as a table"""
+    """The class displays Expenses in a table"""
 
     def render_expenses(self, expenses):
         """Displays a list of Expenses in a table"""
         table = Texttable()
-        table.set_cols_align(["l", "r", "r"])
-        table.header(["Name", "Cost", "Deadline"])
-        table.set_cols_dtype(["t", "f", "t"])
+        table.set_cols_align(["r", "l", "r", "r"])
+        table.header(["#", "Name", "Cost", "Deadline"])
+        table.set_cols_dtype(["i", "t", "f", "t"])
         table.set_precision(2)
         table.set_deco(Texttable.HEADER | Texttable.HLINES)
 
-        for expense in expenses:
-            table.add_row([expense.get_name(), expense.get_cost(), expense.get_deadline_string()])
+        for index, expense in enumerate(expenses):
+            table.add_row([index + 1, expense.get_name(), expense.get_cost(), 
+                           expense.get_deadline_string()])
 
         print(table.draw())
 
