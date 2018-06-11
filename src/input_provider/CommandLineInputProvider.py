@@ -1,7 +1,7 @@
-from src.Expense import Expense
-from datetime import datetime
-import sys
+"""The module contains API for command-line user interactions"""
 import uuid
+from datetime import datetime
+from src.Expense import Expense
 
 class CommandLineInputProvider:
     """Interprets user input from the console"""
@@ -12,13 +12,13 @@ class CommandLineInputProvider:
         deadline = input("Deadline (YYYY-MM-DD):")
         plan_id = uuid.uuid4()
 
-        return Expense(uuid.uuid4(), name, cost, 
-                       self.__convert_date_string_to_timestamp(deadline), 
+        return Expense(uuid.uuid4(), name, cost,
+                       self.__convert_date_string_to_timestamp(deadline),
                        plan_id)
 
     def __convert_date_string_to_timestamp(self, date_string):
         """Converts date (YYYY-MM-DD) to a number"""
-        year, month, day = map(lambda n: int(n), date_string.split("-"))
+        year, month, day = map(int, date_string.split("-"))
         date = datetime(year, month, day)
-        
-        return int(round(date.timestamp()))
+
+        return date.timestamp()
