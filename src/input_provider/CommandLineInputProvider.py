@@ -1,9 +1,12 @@
 """The module contains API for command-line user interactions"""
 import uuid
+from colorama import init, Fore, Style
 from datetime import datetime
 from src.Expense import Expense
 from src.utils.validators import (check_if_is_non_empty_string,
                                   check_if_is_numeric, check_if_is_date_string)
+
+init()
 
 class CommandLineInputProvider:
     """Interprets user input from the console"""
@@ -23,8 +26,9 @@ class CommandLineInputProvider:
         try:
             check_if_is_non_empty_string("Expense name", name)
         except ValueError as exception:
-            print("ERROR: {exception}".format(exception=exception))
-            self.__get_name_input()
+            print(Fore.RED + "ERROR: {exception}".format(exception=exception) +
+                  Style.RESET_ALL)
+            name = self.__get_name_input()
 
         return name
 
@@ -35,8 +39,9 @@ class CommandLineInputProvider:
         try:
             check_if_is_numeric("Cost", cost)
         except ValueError as exception:
-            print("ERROR: {exception}".format(exception=exception))
-            self.__get_cost_input()
+            print(Fore.RED + "ERROR: {exception}".format(exception=exception) +
+                  Style.RESET_ALL)
+            cost = self.__get_cost_input()
 
         return cost
 
@@ -46,10 +51,11 @@ class CommandLineInputProvider:
 
         try:
             check_if_is_date_string("Deadline", deadline, "YYYY-MM-DD")
-            return self.__convert_date_string_to_timestamp(deadline)
+            deadline = self.__convert_date_string_to_timestamp(deadline)
         except ValueError as exception:
-            print("ERROR: {exception}".format(exception=exception))
-            self.__get_deadline_input()
+            print(Fore.RED + "ERROR: {exception}".format(exception=exception) +
+                  Style.RESET_ALL)
+            deadline = self.__get_deadline_input()
 
         return deadline
 
@@ -61,4 +67,4 @@ class CommandLineInputProvider:
 
             return date.timestamp()
         except Exception as exception:
-            raise ValueError("ERROR: {exception}".format(exception=exception))
+            raise ValueError(exception)
