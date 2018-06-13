@@ -31,10 +31,10 @@ def check_if_is_date_string(name, value, value_format):
     def create_date_pattern():
         """Creates a date pattern string for strptime method"""
         if value_format == "YYYY-MM-DD":
-            return "%y-%m-%d"
+            return "%Y-%m-%d"
 
     try:
         datetime.strptime(value, create_date_pattern())
     except ValueError:
         raise ValueError("{name} must match the pattern '{value_format}'"
-                        .format(name=name, value_format=value_format))
+                         .format(name=name, value_format=value_format))

@@ -2,7 +2,8 @@
 import uuid
 from datetime import datetime
 from src.Expense import Expense
-from src.utils.validators import check_if_is_non_empty_string, check_if_is_numeric
+from src.utils.validators import (check_if_is_non_empty_string,
+                                  check_if_is_numeric, check_if_is_date_string)
 
 class CommandLineInputProvider:
     """Interprets user input from the console"""
@@ -10,12 +11,10 @@ class CommandLineInputProvider:
         """Creates a new Expense instance from the user input"""
         name = self.__get_name_input()
         cost = self.__get_cost_input()
-        deadline = input("Deadline (YYYY-MM-DD):")
+        deadline = self.__get_deadline_input()
         plan_id = uuid.uuid4()
 
-        return Expense(uuid.uuid4(), name, cost,
-                       self.__convert_date_string_to_timestamp(deadline),
-                       plan_id)
+        return Expense(uuid.uuid4(), name, cost, deadline, plan_id)
 
     def __get_name_input(self):
         """Retrieves the name of the Expense from the user"""
@@ -39,9 +38,27 @@ class CommandLineInputProvider:
             print("ERROR: {exception}".format(exception=exception))
             self.__get_cost_input()
 
+        return cost
+
+    def __get_deadline_input(self):
+        """Retrieves the deadline of the Expense from the user"""
+        deadline = input("Deadline (YYYY-MM-DD):")
+
+        try:
+            check_if_is_date_string("Deadline", deadline, "YYYY-MM-DD")
+            return self.__convert_date_string_to_timestamp(deadline)
+        except ValueError as exception:
+            print("ERROR: {exception}".format(exception=exception))
+            self.__get_deadline_input()
+
+        return deadline
+
     def __convert_date_string_to_timestamp(self, date_string):
         """Converts date (YYYY-MM-DD) to a number"""
-        year, month, day = map(int, date_string.split("-"))
-        date = datetime(year, month, day)
+        try:
+            year, month, day = map(int, date_string.split("-"))
+            date = datetime(year, month, day)
 
-        return date.timestamp()
+            return date.timestamp()
+        except Exception as exception:
+            raise ValueError("ERROR: {exception}".format(exception=exception))
