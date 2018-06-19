@@ -11,6 +11,7 @@ EXPENSES_TABLE_NAME = "expenses"
 
 def main():
     """Main application entry point"""
+    os.system("cls" if os.name == "nt" else "clear")
 
     expenses_retriever = SqliteExpensesRetriever(DATABASE_PATH, EXPENSES_TABLE_NAME)
     expenses = expenses_retriever.retrieve_unpaid_expenses()
